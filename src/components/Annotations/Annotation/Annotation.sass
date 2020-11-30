@@ -1,0 +1,60 @@
+@import "../../../styles/variables"
+
+.annotation
+  position: absolute
+  &__btn
+    position: absolute
+    width: 32px
+    height: 32px
+    margin-left: -16px
+    margin-top: -16px
+    background-color: $orangeColor
+    border-radius: 50%
+    z-index: 10
+  &__title
+    color: $whiteColor
+  &__block
+    position: relative
+    top: 35px
+    left: -50%
+    display: flex
+    font-size: 14px
+    min-width: 364px
+    padding: 16px
+    border: 1px solid $_beta
+    border-radius: 4px
+    background-color: $whiteColor
+    color: $_alpha
+    z-index: 11
+  &__logo
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 32px
+    height: 32px
+    margin-right: 8px
+    border-radius: 50%
+    background-color: $orangeColor
+    color: #FDD5D5
+  &__author
+    font-weight: bold
+  &__triagle
+    content: ''
+    position: absolute
+    background-color: $whiteColor
+    transform: rotate(45deg)
+    width: 12px
+    height: 12px
+    top: -7px
+    left: 50%
+    margin-left: -6px
+    border: 1px solid $_beta
+    border-bottom: 0
+    border-right: 0
+  &__delete
+    position: absolute
+    top: 8px
+    right: 8px
+    padding: 0
+    background: inherit
+    font-size: 20px

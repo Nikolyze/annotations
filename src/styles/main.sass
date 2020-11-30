@@ -1,0 +1,55 @@
+@import './_variables.sass'
+@import './mixins.sass'
+@import './icons.sass'
+
+html
+  box-sizing: border-box
+  -ms-overflow-style: scrollbar
+  -webkit-tap-highlight-color: transparent
+
+*,
+*:before,
+*:after
+  box-sizing: inherit
+
+html,
+body
+  margin: 0
+  padding: 0
+  height: 100%
+  // adjust font size
+  font-size: 100%
+  -webkit-text-size-adjust: 100%
+  -ms-text-size-adjust: 100%
+  // font variant
+  font-variant-ligatures: none
+  -webkit-font-variant-ligatures: none
+  // smoothing
+  text-rendering: optimizeLegibility
+  -moz-osx-font-smoothing: grayscale
+  font-smoothing: antialiased
+  -webkit-font-smoothing: antialiased
+  text-shadow: rgba(0, 0, 0, .01) 0 0 1px
+
+  .overflow-hidden
+    overflow: hidden
+
+body
+  position: relative
+  font-family: 'Open Sans', sans-serif
+  font-size: 16px
+  line-height: 1.5
+  background-color: #ffffff
+  overflow-x: hidden
+  -webkit-overflow-scrolling: touch
+
+#root
+  height: 100%
+
+img
+  image-rendering: -webkit-optimize-contrast
+  image-rendering: -o-crisp-edges
+  image-rendering: -moz-crisp-edges
+
+.btn-reset
+  @include buttonReset()

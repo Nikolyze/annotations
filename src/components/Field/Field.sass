@@ -1,0 +1,37 @@
+@import '../../styles/_variables.sass'
+
+.field
+  &__inner
+    position: relative
+    height: 576px
+    background-color: $mainColorLight
+    overflow: hidden
+    display: flex
+    align-items: center
+    justify-content: center
+  &__head
+    display: flex
+    margin-bottom: 16px
+    align-items: center
+    justify-content: space-between
+    &__name
+      font-weight: 700
+      font-size: 24px
+    &__upload
+      padding: 9px 24px
+      border-radius: 4px
+      background-color: $_psi
+      color: $mainColor
+      font-size: 16px
+  &__comments
+    display: flex
+    align-items: center
+    margin-top: 40px
+    &__icon
+      font-size: 24px
+    &__text
+      margin: 0 5px
+      font-size: 14px
+      color: $_omega
+      &:first-child
+        margin-left: 0
