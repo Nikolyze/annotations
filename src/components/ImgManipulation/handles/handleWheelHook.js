@@ -1,6 +1,6 @@
 import React  from 'react';
 
-const HandleWheelHook = (dispatch, state) => (evt) => {
+const handleWheelHook = (dispatch, state) => (evt) => {
     evt.preventDefault();
     let copiedState = { ...state };
     const {
@@ -40,4 +40,4 @@ const HandleWheelHook = (dispatch, state) => (evt) => {
     dispatch({ type: 'updateData', payload: copiedState });
 }
 
-export default HandleWheelHook;
+export default handleWheelHook;

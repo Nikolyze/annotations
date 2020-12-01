@@ -1,6 +1,6 @@
 import React, { useReducer } from 'react';
 
-const UseReducer = (initialState) => {
+const UseReducerHook = (initialState) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     function reducer(state, action) {
@@ -28,4 +28,4 @@ const UseReducer = (initialState) => {
     return [state, dispatch];
 }
 
-export default UseReducer;
+export default UseReducerHook;

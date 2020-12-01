@@ -4,7 +4,7 @@ function setTranslate(yPos, el) {
     el.style.transform = `translate3d(0, ${yPos}px, 0)`;
 }
 
-const HandleMouseMove = (dispatch, state) => (evt) => {
+const handleMouseMove = (dispatch, state) => (evt) => {
     evt.preventDefault();
     const {
         moveData: {
@@ -25,4 +25,4 @@ const HandleMouseMove = (dispatch, state) => (evt) => {
     });
 }
 
-export default HandleMouseMove;
+export default handleMouseMove;

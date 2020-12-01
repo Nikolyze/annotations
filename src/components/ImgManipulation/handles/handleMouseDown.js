@@ -1,6 +1,6 @@
 import React  from 'react';
 
-const HandleMouseDown = (dispatch, state) => (evt) => {
+const handleMouseDown = (dispatch, state) => (evt) => {
     evt.preventDefault();
     const {
         moveData: {
@@ -17,4 +17,4 @@ const HandleMouseDown = (dispatch, state) => (evt) => {
     });
 }
 
-export default HandleMouseDown;
+export default handleMouseDown;

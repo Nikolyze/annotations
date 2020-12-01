@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Annotations from '../Annotations/Annotations';
-import UseReducer from './hooks/UseReducer';
+import UseReducerHook from './hooks/UseReducerHook';
 
-import HandleWheelHook from './handles/handleWheelHook';
-import HandleMouseUp from './handles/handleMouseUp';
-import HandleMouseDown from './handles/handleMouseDown';
-import HandleMouseMove from './handles/handleMouseMove';
-import HandleClick from './handles/handleClick';
+import handleWheelHook from './handles/handleWheelHook';
+import handleMouseUp from './handles/handleMouseUp';
+import handleMouseDown from './handles/handleMouseDown';
+import handleMouseMove from './handles/handleMouseMove';
+import handleClick from './handles/handleClick';
+import handleAnnotationDelete from './handles/handleAnnotationDelete';
 
 import LoadImgHook from './hooks/loadImgHook';
 
@@ -20,7 +21,7 @@ const ImgManipulation = ({ area, zoomData }) => {
     const refParent = useRef(null);
     const [annotations, setAnnotations] = useState(null);
 
-    const [state, dispatch] = UseReducer({
+    const [state, dispatch] = UseReducerHook({
         value: 1,
         width: undefined,
         height: undefined,
@@ -42,17 +43,17 @@ const ImgManipulation = ({ area, zoomData }) => {
     const [load, handleLoad] = LoadImgHook();
 
     useEffect(() => {
-        if (!load) return false;
-
-        dispatch({
-            type: 'updateDataPartial',
-            payload: {
-                width: ref.current.width,
-                height: ref.current.height,
-                initialWidth: ref.current.width,
-                initialHeight: ref.current.height
-            }
-        });
+        if (load) {
+            dispatch({
+                type: 'updateDataPartial',
+                payload: {
+                    width: ref.current.width,
+                    height: ref.current.height,
+                    initialWidth: ref.current.width,
+                    initialHeight: ref.current.height
+                }
+            });
+        }
     }, [load]);
 
     useEffect(() => {
@@ -77,39 +78,51 @@ const ImgManipulation = ({ area, zoomData }) => {
     }, []);
 
     useEffect(() => {
-        if (!area) return false;
-        const { zoom, index } = zoomData;
-        const { initialWidth, initialHeight } = state;
-        const { width } = area;
-        let resultWidth;
-        let resultHeight;
+        if (area) {
+            const { zoom, index } = zoomData;
+            const { initialWidth, initialHeight } = state;
+            const { width } = area;
+            let resultWidth;
+            let resultHeight;
 
-        if (zoom === MINUS) {
-            const nextHeight = state.height * index;
-            nextHeight <= initialHeight ? resultHeight = initialHeight : resultHeight = nextHeight;
-            resultWidth = nextHeight <= initialHeight ? initialWidth : state.width * index;
-        }
-        if (zoom === PLUS) {
-            const nextWidth = state.width / index;
-            nextWidth >= width ? resultWidth = width : resultWidth = nextWidth;
-            resultHeight = state.height / index;
-        }
-
-        dispatch({
-            type: 'updateDataPartial',
-            payload: {
-                width: resultWidth,
-                height: resultHeight
+            if (zoom === MINUS) {
+                const nextHeight = state.height * index;
+                nextHeight <= initialHeight ? resultHeight = initialHeight : resultHeight = nextHeight;
+                resultWidth = nextHeight <= initialHeight ? initialWidth : state.width * index;
             }
-        })
+            if (zoom === PLUS) {
+                const nextWidth = state.width / index;
+                nextWidth >= width ? resultWidth = width : resultWidth = nextWidth;
+                resultHeight = state.height / index;
+            }
+
+            dispatch({
+                type: 'updateDataPartial',
+                payload: {
+                    width: resultWidth,
+                    height: resultHeight
+                }
+            })
+        }
     }, [zoomData]);
 
-    const setAnnotationsLocal = (data) => {
+    const setAnnotationsLocal = (data = {}) => {
+        console.log(data);
         setAnnotations([
             ...annotations,
             data
         ]);
     }
+
+    const handlerDeleteFromState = (id) => {
+        const filteredAnn = annotations.filter((ann) => ann.id !== id);
+
+        setAnnotations([
+            ...filteredAnn
+        ]);
+    }
+
+    const handleDelete = (id) => handleAnnotationDelete(handlerDeleteFromState, id)
 
     return (
         <div
@@ -120,17 +133,18 @@ const ImgManipulation = ({ area, zoomData }) => {
                 annotations={annotations}
                 height={state.height}
                 width={state.width}
+                handleDelete={handleDelete}
             />
             <img
                 className='img-manipulation__picture'
                 alt='nature'
                 ref={ref}
                 onLoad={handleLoad}
-                onWheel={HandleWheelHook(dispatch, state)}
-                onMouseUp={HandleMouseUp(dispatch, state)}
-                onMouseDown={HandleMouseDown(dispatch, state)}
-                onMouseMove={HandleMouseMove(dispatch, state)}
-                onClick={HandleClick(setAnnotationsLocal, dispatch, state)}
+                onWheel={handleWheelHook(dispatch, state)}
+                onMouseUp={handleMouseUp(dispatch, state)}
+                onMouseDown={handleMouseDown(dispatch, state)}
+                onMouseMove={handleMouseMove(dispatch, state)}
+                onClick={handleClick(setAnnotationsLocal, dispatch, state)}
                 src={nature}
                 width={state.width + 'px'}
                 height={state.height + 'px'}

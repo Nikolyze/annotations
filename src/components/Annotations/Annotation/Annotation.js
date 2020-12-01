@@ -1,23 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Annotation.sass';
 
 const Annotation = ({
     ann,
     left,
     top,
-    index
+    handleDelete
 }) => {
     const [isOpen, setToggle] = useState(false);
-    const handleClick = () => {
-        setToggle(!isOpen)
-    };
+    useEffect(() => setToggle(false), [ann]);
+
+    const handleClick = () => setToggle(!isOpen);
 
     const author = ann && ann.author && ann.author
         .split(' ')
         .map(item => item[0].toUpperCase())
         .join('');
 
-    // TODO:: in the next step, implement the input of a comment and deleting it
+    const handleAnnotationDelete = () => handleDelete(ann.id);
+
     return (
         <div
             className='annotation'
@@ -32,7 +33,7 @@ const Annotation = ({
                 onClick={handleClick}
             >
                     <span className='annotation__title'>
-                        {++index}
+                        {ann.id}
                     </span>
             </button>
             {isOpen && (
@@ -49,7 +50,10 @@ const Annotation = ({
                             {ann.comment}
                         </div>
                     </div>
-                    <button className='annotation__delete icon-delete btn-reset' />
+                    <button
+                        className='annotation__delete icon-delete btn-reset'
+                        onClick={handleAnnotationDelete}
+                    />
                 </div>
             )}
         </div>

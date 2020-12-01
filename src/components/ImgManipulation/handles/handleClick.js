@@ -1,7 +1,7 @@
 import React from 'react';
 import { URL } from '../../../static/constants';
 
-const HandleClick = (setAnnotationsLocal, dispatch, state) => (evt) => {
+const handleClick = (setAnnotationsLocal, dispatch, state) => (evt) => {
     evt.preventDefault();
     const {
         moveData: {
@@ -44,12 +44,9 @@ const HandleClick = (setAnnotationsLocal, dispatch, state) => (evt) => {
         },
         body: JSON.stringify(body)
     }).then((response) => {
-        if (response.ok) {
-            setAnnotationsLocal(body)
-        } else {
-            // TODO:: error handling
-        };
-    });
+        if (response.ok) return response.json();
+        // TODO:: error handling
+    }).then(data => setAnnotationsLocal(data));
 }
 
-export default HandleClick;
+export default handleClick;
