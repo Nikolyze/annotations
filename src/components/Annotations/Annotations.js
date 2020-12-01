@@ -5,7 +5,8 @@ const Annotations = ({
      annotations,
      height,
      width,
-     handleDelete
+     handleDelete,
+     handleAdd
 }) => annotations && annotations.map(ann => {
     if  (!ann.pos) return null;
     const posXPx = width * ann.pos.x;
@@ -17,10 +18,11 @@ const Annotations = ({
     return (
         <Annotation
             ann={ann}
-            key={ann.id}
+            key={ann.pos.x + ann.pos.y}
             top={top}
             left={left}
             handleDelete={handleDelete}
+            handleAdd={handleAdd}
         />
     )
 })

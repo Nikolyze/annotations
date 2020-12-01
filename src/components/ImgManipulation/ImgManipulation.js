@@ -8,6 +8,7 @@ import handleMouseDown from './handles/handleMouseDown';
 import handleMouseMove from './handles/handleMouseMove';
 import handleClick from './handles/handleClick';
 import handleAnnotationDelete from './handles/handleAnnotationDelete';
+import handleAnnotationAdd from './handles/handleAnnotationAdd';
 
 import LoadImgHook from './hooks/loadImgHook';
 
@@ -19,7 +20,8 @@ import nature from '../../static/i/nature.png';
 const ImgManipulation = ({ area, zoomData }) => {
     const ref = useRef(null);
     const refParent = useRef(null);
-    const [annotations, setAnnotations] = useState(null);
+    const [annotations, setAnnotations] = useState([]);
+    const [annotation, saveAnnotation] = useState({});
 
     const [state, dispatch] = UseReducerHook({
         value: 1,
@@ -72,8 +74,9 @@ const ImgManipulation = ({ area, zoomData }) => {
             if (response.status === 200) {
                 return response.json()
             }
+            // TODO:: error handling
         }).then((annotations) => {
-            setAnnotations(annotations);
+            setAnnotations(annotations)
         })
     }, []);
 
@@ -107,12 +110,12 @@ const ImgManipulation = ({ area, zoomData }) => {
     }, [zoomData]);
 
     const setAnnotationsLocal = (data = {}) => {
-        console.log(data);
+
         setAnnotations([
             ...annotations,
             data
         ]);
-    }
+    };
 
     const handlerDeleteFromState = (id) => {
         const filteredAnn = annotations.filter((ann) => ann.id !== id);
@@ -120,9 +123,13 @@ const ImgManipulation = ({ area, zoomData }) => {
         setAnnotations([
             ...filteredAnn
         ]);
-    }
+    };
 
-    const handleDelete = (id) => handleAnnotationDelete(handlerDeleteFromState, id)
+    const handleDelete = (id) => handleAnnotationDelete(handlerDeleteFromState, id);
+    const handleAdd = (comment) => {
+        handleAnnotationAdd(setAnnotationsLocal, { ...annotation, comment });
+        saveAnnotation({});
+    };
 
     return (
         <div
@@ -130,10 +137,11 @@ const ImgManipulation = ({ area, zoomData }) => {
             ref={refParent}
         >
             <Annotations
-                annotations={annotations}
+                annotations={[...annotations, annotation]}
                 height={state.height}
                 width={state.width}
                 handleDelete={handleDelete}
+                handleAdd={handleAdd}
             />
             <img
                 className='img-manipulation__picture'
@@ -144,7 +152,7 @@ const ImgManipulation = ({ area, zoomData }) => {
                 onMouseUp={handleMouseUp(dispatch, state)}
                 onMouseDown={handleMouseDown(dispatch, state)}
                 onMouseMove={handleMouseMove(dispatch, state)}
-                onClick={handleClick(setAnnotationsLocal, dispatch, state)}
+                onClick={handleClick(saveAnnotation, dispatch, state)}
                 src={nature}
                 width={state.width + 'px'}
                 height={state.height + 'px'}

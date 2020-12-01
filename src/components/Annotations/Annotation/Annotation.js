@@ -5,9 +5,11 @@ const Annotation = ({
     ann,
     left,
     top,
-    handleDelete
+    handleDelete,
+    handleAdd
 }) => {
     const [isOpen, setToggle] = useState(false);
+    const [comment, setValue] = useState('');
     useEffect(() => setToggle(false), [ann]);
 
     const handleClick = () => setToggle(!isOpen);
@@ -17,7 +19,9 @@ const Annotation = ({
         .map(item => item[0].toUpperCase())
         .join('');
 
+    const handlerChange = (evt) => setValue(evt.target.value);
     const handleAnnotationDelete = () => handleDelete(ann.id);
+    const handleAnnotationAdd = () => handleAdd(comment);
 
     return (
         <div
@@ -32,28 +36,50 @@ const Annotation = ({
                 className='btn-reset annotation__btn'
                 onClick={handleClick}
             >
-                    <span className='annotation__title'>
-                        {ann.id}
-                    </span>
+                <span className='annotation__title'>
+                    {ann.id}
+                </span>
             </button>
             {isOpen && (
                 <div className='annotation__block'>
                     <div className='annotation__triagle' />
-                    <div className='annotation__logo'>
-                        {author}
-                    </div>
-                    <div>
-                        <div className='annotation__author'>
-                            {ann.author}
+                    {ann.comment && (
+                        <div className='annotation__logo'>
+                            {author}
                         </div>
-                        <div className='annotation__text'>
-                            {ann.comment}
+                    )}
+                    {ann.comment ? (
+                        <div>
+                            <div className='annotation__author'>
+                                {ann.author}
+                            </div>
+                            <div className='annotation__text'>
+                                {ann.comment}
+                            </div>
                         </div>
-                    </div>
-                    <button
-                        className='annotation__delete icon-delete btn-reset'
-                        onClick={handleAnnotationDelete}
-                    />
+                    ) : (
+                        <div className='annotation__comment'>
+                            <input
+                                type='text'
+                                className='annotation__input'
+                                placeholder='Leave a comment'
+                                value={comment}
+                                onChange={handlerChange}
+                            />
+                            <button
+                                type='button'
+                                className='annotation__btn-letter btn-reset icon-letter'
+                                onClick={handleAnnotationAdd}
+                                disabled={!comment}
+                            />
+                        </div>
+                    )}
+                    {ann.comment && (
+                        <button
+                            className='annotation__delete icon-delete btn-reset'
+                            onClick={handleAnnotationDelete}
+                        />
+                    )}
                 </div>
             )}
         </div>

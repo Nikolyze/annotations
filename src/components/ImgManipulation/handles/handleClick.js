@@ -1,7 +1,6 @@
 import React from 'react';
-import { URL } from '../../../static/constants';
 
-const handleClick = (setAnnotationsLocal, dispatch, state) => (evt) => {
+const handleClick = (saveAnnotation, dispatch, state) => (evt) => {
     evt.preventDefault();
     const {
         moveData: {
@@ -27,26 +26,13 @@ const handleClick = (setAnnotationsLocal, dispatch, state) => (evt) => {
     const resYTop = clientX - left;
     const resXLeft = clientY - top;
 
-    // INFO:: mock data, no data saving input data
     const body = {
-        author: "Luke Skywalker",
-        comment: "May the force be with you",
         pos: {
             x: resYTop / width,
             y: resXLeft / height
         }
     };
-
-    fetch(URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-    }).then((response) => {
-        if (response.ok) return response.json();
-        // TODO:: error handling
-    }).then(data => setAnnotationsLocal(data));
+    saveAnnotation(body);
 }
 
 export default handleClick;
