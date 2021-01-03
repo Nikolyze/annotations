@@ -2,22 +2,20 @@ import React, { useEffect, useRef, useState } from 'react';
 import Annotations from '../Annotations/Annotations';
 import UseReducerHook from './hooks/UseReducerHook';
 
-import handleWheelHook from './handles/handleWheelHook';
+// TODO:: repair handleWheelHook later
+// import handleWheelHook from './handles/handleWheelHook';
 import handleMouseUp from './handles/handleMouseUp';
 import handleMouseDown from './handles/handleMouseDown';
 import handleMouseMove from './handles/handleMouseMove';
 import handleClick from './handles/handleClick';
 import handleAnnotationDelete from './handles/handleAnnotationDelete';
 import handleAnnotationAdd from './handles/handleAnnotationAdd';
-
-import LoadImgHook from './hooks/loadImgHook';
+import { updateAnnotation } from '../../ajax/requests';
 
 import { URL, PLUS, MINUS } from '../../static/constants';
 import './ImgManipulation.sass';
 
-import nature from '../../static/i/nature.png';
-
-const ImgManipulation = ({ area, zoomData }) => {
+const ImgManipulation = ({ src, area, zoomData }) => {
     const ref = useRef(null);
     const refParent = useRef(null);
     const [annotations, setAnnotations] = useState([]);
@@ -42,21 +40,23 @@ const ImgManipulation = ({ area, zoomData }) => {
         }
     });
 
-    const [load, handleLoad] = LoadImgHook();
-
     useEffect(() => {
-        if (load) {
-            dispatch({
-                type: 'updateDataPartial',
-                payload: {
-                    width: ref.current.width,
-                    height: ref.current.height,
-                    initialWidth: ref.current.width,
-                    initialHeight: ref.current.height
-                }
-            });
+        if (src) {
+            const img = new Image();
+            img.src = src;
+            img.onload = () => {
+                dispatch({
+                    type: 'updateDataPartial',
+                    payload: {
+                        width: img.width,
+                        height: img.height,
+                        initialWidth: img.width,
+                        initialHeight: img.height
+                    }
+                });
+            };
         }
-    }, [load]);
+    }, [src]);
 
     useEffect(() => {
         dispatch({
@@ -125,11 +125,17 @@ const ImgManipulation = ({ area, zoomData }) => {
         ]);
     };
 
-    const handleDelete = (id) => handleAnnotationDelete(handlerDeleteFromState, id);
-    const handleAdd = (comment) => {
-        handleAnnotationAdd(setAnnotationsLocal, { ...annotation, comment });
-        saveAnnotation({});
+    const handleDelete = async (id) => {
+        const sameId = await handleAnnotationDelete(id);
+        handlerDeleteFromState(sameId);
     };
+    const handleAdd = async (comment) => {
+        const response = await handleAnnotationAdd( { ...annotation, comment });
+        saveAnnotation({});
+        setAnnotationsLocal(response);
+    };
+
+    const handleUpdate = async (id, payload) => await updateAnnotation(id, payload);
 
     return (
         <div
@@ -142,18 +148,20 @@ const ImgManipulation = ({ area, zoomData }) => {
                 width={state.width}
                 handleDelete={handleDelete}
                 handleAdd={handleAdd}
+                saveAnnotation={saveAnnotation}
+                handleUpdate={handleUpdate}
             />
             <img
                 className='img-manipulation__picture'
                 alt='nature'
-                ref={ref}
-                onLoad={handleLoad}
-                onWheel={handleWheelHook(dispatch, state)}
+                // TODO:: connect after repair handleWheelHook
+                // onWheel={handleWheelHook(dispatch, state)}
                 onMouseUp={handleMouseUp(dispatch, state)}
                 onMouseDown={handleMouseDown(dispatch, state)}
                 onMouseMove={handleMouseMove(dispatch, state)}
                 onClick={handleClick(saveAnnotation, dispatch, state)}
-                src={nature}
+                src={src}
+                ref={ref}
                 width={state.width + 'px'}
                 height={state.height + 'px'}
             />

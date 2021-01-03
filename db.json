@@ -2,97 +2,21 @@
   "annotations": [
     {
       "author": "Luke Skywalker",
-      "comment": "May the force be with you",
       "pos": {
-        "x": 0.16563467492260062,
-        "y": 0.390625
+        "x": 0.7441466718266254,
+        "y": 0.09171549479166667
       },
+      "comment": "sdvsdv",
+      "id": 1
+    },
+    {
+      "author": "Luke Skywalker",
+      "pos": {
+        "x": 0.5642414860681114,
+        "y": 0.2525770399305556
+      },
+      "comment": "свымывм ывм",
       "id": 2
-    },
-    {
-      "author": "Luke Skywalker",
-      "comment": "May the force be with you",
-      "pos": {
-        "x": 0.8065015479876161,
-        "y": 0.4965277777777778
-      },
-      "id": 3
-    },
-    {
-      "author": "Luke Skywalker",
-      "comment": "May the force be with you",
-      "pos": {
-        "x": 0.3142414860681115,
-        "y": 0.13020833333333334
-      },
-      "id": 4
-    },
-    {
-      "author": "Luke Skywalker",
-      "pos": {
-        "x": 0.608359133126935,
-        "y": 0.1076388888888889
-      },
-      "id": 5
-    },
-    {
-      "author": "Luke Skywalker",
-      "pos": {
-        "x": 0.5835913312693498,
-        "y": 0.0763888888888889
-      },
-      "id": 6
-    },
-    {
-      "author": "Luke Skywalker",
-      "pos": {
-        "x": 0.19659442724458204,
-        "y": 0.24131944444444445
-      },
-      "comment": "sdvsdvsd",
-      "id": 7
-    },
-    {
-      "0": {
-        "pos": {
-          "x": 0.456656346749226,
-          "y": 0.22743055555555555
-        }
-      },
-      "author": "Luke Skywalker",
-      "comment": "save",
-      "id": 8
-    },
-    {
-      "0": {
-        "pos": {
-          "x": 0.42260061919504643,
-          "y": 0.21875
-        }
-      },
-      "author": "Luke Skywalker",
-      "comment": "dsvsd",
-      "id": 9
-    },
-    {
-      "0": {
-        "pos": {
-          "x": 0.4411764705882353,
-          "y": 0.2152777777777778
-        }
-      },
-      "author": "Luke Skywalker",
-      "comment": "sdsvds",
-      "id": 10
-    },
-    {
-      "author": "Luke Skywalker",
-      "pos": {
-        "x": 0.6114551083591331,
-        "y": 0.3577745225694444
-      },
-      "comment": "Save some hobby",
-      "id": 11
     }
   ]
 }

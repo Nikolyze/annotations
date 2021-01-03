@@ -1,19 +1,12 @@
 import React from 'react';
-import { URL } from '../../../static/constants';
+import { addAnnotation } from '../../../ajax/requests';
 
-const handleAnnotationAdd = (setAnnotationsLocal, data) => {
-    const body = { author: 'Luke Skywalker', ...data };
-
-    fetch(URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-    }).then((response) => {
-        if (response.ok) return response.json();
-        // TODO:: error handling
-    }).then(data => setAnnotationsLocal(data));
+const handleAnnotationAdd = async (data) => {
+    try {
+        return await addAnnotation({ author: 'Luke Skywalker', ...data });
+    } catch (e) {
+        console.log(e);
+    }
 };
 
 export default handleAnnotationAdd;

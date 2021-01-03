@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import FieldStateHook from './hooks/FieldStateHook';
 import ImgManipulation from '../ImgManipulation/ImgManipulation';
 import Zoom from '../Zoom/Zoom';
 import { DEFAULT, PLUS, MINUS } from '../../static/constants';
 import './Field.sass';
 
+import nature from '../../static/i/nature.png';
+
 const Field = () => {
     const [area, ref] = FieldStateHook();
+    const upload = useRef(null);
+    const [fileSrc, setFile] = useState(nature);
     let [zoomData, setZoomindex] = useState({ zoom: DEFAULT, index: 1 });
+
     const handleZoomPlus = () => {
         setZoomindex({ zoom: PLUS, index: 0.5 });
     }
@@ -16,15 +21,26 @@ const Field = () => {
         setZoomindex({ zoom: MINUS, index: 0.5 });
     }
 
+    const handleChange = (evt) => {
+        const file = evt.target.files[0];
+        if (file) setFile(URL.createObjectURL(file));
+    }
+
+    const handleClick = () => upload.current.click();
+
     return (
         <div className='field'>
             <div className='field__head'>
                 <div className='field__head__name'>Here goes the file name</div>
                 {/*TODO:: implement image loading*/}
-                <button className='btn-reset field__head__upload'>Upload image</button>
+                <div className='field__head__upload-btn'>
+                    <input ref={upload} type='file' onChange={handleChange} />
+                    <button onClick={handleClick} className='btn-reset field__head__upload'>Upload image</button>
+                </div>
             </div>
             <div className="field__inner" ref={ref}>
                 <ImgManipulation
+                    src={fileSrc}
                     zoomData={zoomData}
                     area={area}
                 />

@@ -1,14 +1,12 @@
 import React from 'react';
-import { URL } from '../../../static/constants';
+import { deleteAnnotation } from '../../../ajax/requests';
 
-const handleAnnotationDelete = (handlerDeleteFromState, id) => {
-
-    fetch(`${URL}/${id}`, {
-        method: 'DELETE',
-    }).then((response) => {
-        if (response.ok) return handlerDeleteFromState(id);
-        // TODO:: error handling
-    });
+const handleAnnotationDelete = async (id) => {
+    try {
+        return await deleteAnnotation(id);
+    } catch (e) {
+        console.log(e);
+    }
 }
 
 export default handleAnnotationDelete;
