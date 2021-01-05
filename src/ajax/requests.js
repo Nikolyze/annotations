@@ -1,4 +1,13 @@
-import { URL } from "../static/constants";
+import { URL, FILES_URL } from "../static/constants";
+
+export const getAllFiles = () => (
+    fetch(FILES_URL, {
+        method: 'GET',
+    }).then((response) => {
+        if (response.ok) return response.json();
+        // TODO:: error handling
+    }).then(data => data)
+);
 
 export const addAnnotation = (body) => (
     fetch(URL, {
