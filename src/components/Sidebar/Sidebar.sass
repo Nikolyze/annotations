@@ -24,6 +24,8 @@
     overflow: hidden
     border-radius: 5px
     transition: background-color .4s
+    &_active
+      background-color: #181F2E
     &:hover
       background-color: #181F2E
       img
@@ -31,12 +33,16 @@
     &_closed
       padding: 0
       //background-color: rgba(white, 0)
-    span
-      margin-left: 10px
   &__img
     display: flex
     justify-content: center
     min-width: 50px
+  &__desc
+    display: flex
+    flex-direction: column
+    margin-left: 10px
+    line-height: 1.4
+    align-items: start
   img
     width: auto
     height: 50px

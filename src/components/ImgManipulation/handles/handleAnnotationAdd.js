@@ -1,9 +1,9 @@
 import React from 'react';
-import { addAnnotation } from '../../../ajax/requests';
+import { addAnnotationFile } from '../../../ajax/requests';
 
-const handleAnnotationAdd = async (data) => {
+const handleAnnotationAdd = async (fileId, body) => {
     try {
-        return await addAnnotation({ author: 'Luke Skywalker', ...data });
+        return await addAnnotationFile(fileId, body);
     } catch (e) {
         console.log(e);
     }

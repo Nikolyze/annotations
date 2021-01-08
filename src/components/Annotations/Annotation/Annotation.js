@@ -94,7 +94,7 @@ const Annotation = ({
                 onMouseUp={handleMounseUp(ann.id)}
             >
                 <span className='annotation__title'>
-                    {ann.id}
+                    {author}
                 </span>
             </button>
             {isOpen && (

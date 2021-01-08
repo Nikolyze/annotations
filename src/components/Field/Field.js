@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import FieldStateHook from './hooks/FieldStateHook';
-import { getAllFiles } from '../../ajax/requests';
 import Sidebar from '../Sidebar/Sidebar';
 import ImgManipulation from '../ImgManipulation/ImgManipulation';
 import Zoom from '../Zoom/Zoom';
@@ -8,31 +7,38 @@ import { DEFAULT, PLUS, MINUS } from '../../static/constants';
 import './Field.sass';
 
 import nature from '../../static/i/star.png';
+import { getAllFiles } from "../../ajax/requests";
 
-const Field = () => {
+const Field = ({ match: { params: { id } } }) => {
     const [area, ref] = FieldStateHook();
     const upload = useRef(null);
-    const [fileSrc, setFile] = useState(nature);
+    const [fileSrc, setSrc] = useState(nature);
+    const [files, setFiles] = useState(null);
+    const [currentFile, setFile] = useState(null);
     let [zoomData, setZoomindex] = useState({ zoom: DEFAULT, index: 1 });
 
-    const handleZoomPlus = () => {
-        setZoomindex({ zoom: PLUS, index: 0.5 });
-    }
+    useEffect(async () => {
+        const files = await getAllFiles();
+        setFiles(files);
+        setFile(id ? files.find(file => id == file.id) : files[0]);
+    }, []);
 
-    const handleZoomMinus = () => {
-        setZoomindex({ zoom: MINUS, index: 0.5 });
-    }
+    const handleZoomPlus = () => setZoomindex({ zoom: PLUS, index: 0.5 });
+
+    const handleZoomMinus = () => setZoomindex({ zoom: MINUS, index: 0.5 });
 
     const handleChange = (evt) => {
         const file = evt.target.files[0];
-        if (file) setFile(URL.createObjectURL(file));
+        if (file) setSrc(URL.createObjectURL(file));
     }
 
     const handleClick = () => upload.current.click();
 
+    const handleSetData = (file) => setFile(file);
+
     return (
         <div className='field'>
-            <Sidebar />
+            <Sidebar setData={handleSetData} files={files} />
             <div className='field__head'>
                 <div className='field__head__name'>Here goes the file name</div>
                 {/*TODO:: implement image loading*/}
@@ -42,11 +48,13 @@ const Field = () => {
                 </div>
             </div>
             <div className="field__inner" ref={ref}>
-                <ImgManipulation
-                    src={fileSrc}
-                    zoomData={zoomData}
-                    area={area}
-                />
+                {currentFile && (
+                    <ImgManipulation
+                        currentAnnotation={currentFile}
+                        zoomData={zoomData}
+                        area={area}
+                    />
+                )}
                 <Zoom
                     handleZoomPlus={handleZoomPlus}
                     handleZoomMinus={handleZoomMinus}

@@ -1,87 +1,23 @@
 {
-  "annotations": [
-    {
-      "author": "Luke Skywalker",
-      "pos": {
-        "x": 0.7441466718266254,
-        "y": 0.09171549479166667
-      },
-      "comment": "sdvsdv",
-      "id": 1
-    },
-    {
-      "author": "Luke Skywalker",
-      "pos": {
-        "x": 0.39390869140625,
-        "y": 0.19757080078125
-      },
-      "comment": "свымывм ывм",
-      "id": 3
-    },
-    {
-      "author": "Luke Skywalker",
-      "pos": {
-        "x": 0.685693359375,
-        "y": 0.21220703125
-      },
-      "comment": "свымывм ывм",
-      "id": 4
-    }
-  ],
   "files": [
     {
       "url": "/static/media/nature.c45a67bf.png",
+      "name": "nature",
       "id": 1,
-      "annotations": [
-        {
-          "author": "Luke Skywalker",
-          "pos": {
-            "x": 0.7441466718266254,
-            "y": 0.09171549479166667
-          },
-          "comment": "sdvsdv",
-          "id": 1
-        },
-        {
-          "author": "Luke Skywalker",
-          "pos": {
-            "x": 0.76417236328125,
-            "y": 0.29617919921875
-          },
-          "comment": "свымывм ывм",
-          "id": 2
-        },
-        {
-          "author": "Luke Skywalker",
-          "pos": {
-            "x": 0.1642414860681114,
-            "y": 0.3425770399305556
-          },
-          "comment": "свымывм ывм",
-          "id": 3
-        },
-        {
-          "author": "Luke Skywalker",
-          "pos": {
-            "x": 0.7642414860681114,
-            "y": 0.3342577039930555
-          },
-          "comment": "свымывм ывм",
-          "id": 4
-        }
-      ]
+      "annotations": []
     },
     {
       "url": "/static/media/star.d4508a3f.png",
-      "id": 1,
+      "id": 2,
+      "name": "star",
       "annotations": [
         {
-          "author": "Luke Skywalker",
           "pos": {
-            "x": 0.7441466718266254,
-            "y": 0.09171549479166667
+            "x": 0.3406005859375,
+            "y": 0.3976806640625
           },
-          "comment": "sdvsdv",
+          "comment": "some",
+          "author": "Luke Skywalker",
           "id": 1
         }
       ]

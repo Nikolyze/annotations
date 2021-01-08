@@ -1,24 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { getAllFiles } from '../../ajax/requests';
+import React, { useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import cn from 'classnames';
 import './Sidebar.sass';
 
-const Sidebar = () => {
-    const [files, setFiles] = useState(null);
+const Sidebar = ({ setData, files }) => {
     const [isClose, setClose] = useState(true);
 
-    useEffect(async () => {
-        const files = await getAllFiles();
-        setFiles(files);
-    }, [])
+    const handleEnter = () => setClose(false);
 
-    const handleEnter = () => {
-        setClose(false);
-    }
+    const handleLeave = () => setClose(true);
 
-    const handleLeave = () => {
-        setClose(true);
-    }
+    const handleClick = (file) => () => setData(file);
+    let { id: fileId } = useParams();
 
     return (
         <div
@@ -28,15 +21,24 @@ const Sidebar = () => {
             onMouseEnter={handleEnter}
             onMouseLeave={handleLeave}
         >
-            {files && files.map(file => (
-                <button className={cn('btn-reset sidebar__btn', {
-                    'sidebar__btn_closed': isClose
-                })} key={file.id}>
+            {files && files.map((file, index) => (
+                <Link
+                    to={`/${file.id}`}
+                    className={cn('btn-reset sidebar__btn', {
+                        'sidebar__btn_closed': isClose,
+                        'sidebar__btn_active': fileId ? fileId == file.id : index === 0
+                    })}
+                    key={file.id}
+                    onClick={handleClick(file)}
+                >
                     <div className='sidebar__img'>
                         <img src={file.url} alt=""/>
                     </div>
-                    <span>Annotations: {file.annotations.length}</span>
-                </button>
+                    <div className='sidebar__desc'>
+                        <span>Annotations: {file.annotations.length}</span>
+                        <span>File name: {file.name}</span>
+                    </div>
+                </Link>
             ))}
         </div>
     )

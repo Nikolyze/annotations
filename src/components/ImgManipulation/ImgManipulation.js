@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import Annotations from '../Annotations/Annotations';
 import UseReducerHook from './hooks/UseReducerHook';
 
@@ -10,15 +11,15 @@ import handleMouseMove from './handles/handleMouseMove';
 import handleClick from './handles/handleClick';
 import handleAnnotationDelete from './handles/handleAnnotationDelete';
 import handleAnnotationAdd from './handles/handleAnnotationAdd';
-import { updateAnnotation } from '../../ajax/requests';
+import { updateAnnotationFile } from '../../ajax/requests';
 
-import { URL, PLUS, MINUS } from '../../static/constants';
+import { PLUS, MINUS } from '../../static/constants';
 import './ImgManipulation.sass';
 
-const ImgManipulation = ({ src, area, zoomData }) => {
+const ImgManipulation = ({ currentAnnotation, area, zoomData }) => {
     const ref = useRef(null);
     const refParent = useRef(null);
-    const [annotations, setAnnotations] = useState([]);
+    const [file, setFile] = useState({ annotations: [] });
     const [annotation, saveAnnotation] = useState({});
 
     const [state, dispatch] = UseReducerHook({
@@ -41,9 +42,9 @@ const ImgManipulation = ({ src, area, zoomData }) => {
     });
 
     useEffect(() => {
-        if (src) {
+        if (currentAnnotation.url) {
             const img = new Image();
-            img.src = src;
+            img.src = currentAnnotation.url;
             img.onload = () => {
                 dispatch({
                     type: 'updateDataPartial',
@@ -56,7 +57,7 @@ const ImgManipulation = ({ src, area, zoomData }) => {
                 });
             };
         }
-    }, [src]);
+    }, [currentAnnotation]);
 
     useEffect(() => {
         dispatch({
@@ -70,15 +71,8 @@ const ImgManipulation = ({ src, area, zoomData }) => {
     }, [area]);
 
     useEffect(() => {
-        fetch(URL).then((response) => {
-            if (response.status === 200) {
-                return response.json()
-            }
-            // TODO:: error handling
-        }).then((annotations) => {
-            setAnnotations(annotations)
-        })
-    }, []);
+        setFile(currentAnnotation);
+    }, [currentAnnotation]);
 
     useEffect(() => {
         if (area) {
@@ -109,33 +103,37 @@ const ImgManipulation = ({ src, area, zoomData }) => {
         }
     }, [zoomData]);
 
-    const setAnnotationsLocal = (data = {}) => {
+    const setAnnotationsLocal = (data = {}) => setFile(data);
 
-        setAnnotations([
-            ...annotations,
-            data
-        ]);
-    };
-
-    const handlerDeleteFromState = (id) => {
-        const filteredAnn = annotations.filter((ann) => ann.id !== id);
-
-        setAnnotations([
-            ...filteredAnn
-        ]);
-    };
+    const handlerDeleteFromState = (data) => setFile(data);
 
     const handleDelete = async (id) => {
-        const sameId = await handleAnnotationDelete(id);
-        handlerDeleteFromState(sameId);
+        const { id: fileId } = file;
+        const filteredAnnotations = file.annotations.filter(ann => ann.id !== id);
+        const response = await handleAnnotationDelete(fileId, { ...file, annotations: [...filteredAnnotations] });
+        handlerDeleteFromState(response);
     };
     const handleAdd = async (comment) => {
-        const response = await handleAnnotationAdd( { ...annotation, comment });
+        const body = {
+            ...file,
+            annotations: [
+                ...file.annotations,
+                { ...annotation, comment, author: 'Luke Skywalker', id: uuidv4() }
+            ]
+        };
+
+        const response = await handleAnnotationAdd( currentAnnotation.id, body);
         saveAnnotation({});
         setAnnotationsLocal(response);
     };
 
-    const handleUpdate = async (id, payload) => await updateAnnotation(id, payload);
+    const handleUpdate = async (id, payload) => {
+        const response = await updateAnnotationFile(
+            file.id,
+            { ...file, annotations: file.annotations.map(ann => ann.id === id ? payload : ann) }
+        );
+        setFile(response);
+    };
 
     return (
         <div
@@ -143,7 +141,7 @@ const ImgManipulation = ({ src, area, zoomData }) => {
             ref={refParent}
         >
             <Annotations
-                annotations={[...annotations, annotation]}
+                annotations={[...file.annotations, annotation]}
                 height={state.height}
                 width={state.width}
                 handleDelete={handleDelete}
@@ -160,7 +158,7 @@ const ImgManipulation = ({ src, area, zoomData }) => {
                 onMouseDown={handleMouseDown(dispatch, state)}
                 onMouseMove={handleMouseMove(dispatch, state)}
                 onClick={handleClick(saveAnnotation, dispatch, state)}
-                src={src}
+                src={file.url}
                 ref={ref}
                 width={state.width + 'px'}
                 height={state.height + 'px'}

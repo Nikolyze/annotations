@@ -1,9 +1,9 @@
 import React from 'react';
-import { deleteAnnotation } from '../../../ajax/requests';
+import { deleteAnnotationFile } from '../../../ajax/requests';
 
-const handleAnnotationDelete = async (id) => {
+const handleAnnotationDelete = async (id, updatedAnnotations) => {
     try {
-        return await deleteAnnotation(id);
+        return await deleteAnnotationFile(id, updatedAnnotations);
     } catch (e) {
         console.log(e);
     }
