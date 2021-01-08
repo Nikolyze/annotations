@@ -3,8 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Annotations from '../Annotations/Annotations';
 import UseReducerHook from './hooks/UseReducerHook';
 
-// TODO:: repair handleWheelHook later
-// import handleWheelHook from './handles/handleWheelHook';
+import handleWheelHook from './handles/handleWheelHook';
 import handleMouseUp from './handles/handleMouseUp';
 import handleMouseDown from './handles/handleMouseDown';
 import handleMouseMove from './handles/handleMouseMove';
@@ -73,6 +72,11 @@ const ImgManipulation = ({ currentAnnotation, area, zoomData }) => {
     useEffect(() => {
         setFile(currentAnnotation);
     }, [currentAnnotation]);
+
+    useEffect(() => {
+        if (!state.initialHeight) return;
+        ref.current.addEventListener('wheel', handleWheelHook(dispatch, state), { passive: false });
+    }, [state.initialHeight]);
 
     useEffect(() => {
         if (area) {
@@ -152,8 +156,6 @@ const ImgManipulation = ({ currentAnnotation, area, zoomData }) => {
             <img
                 className='img-manipulation__picture'
                 alt='nature'
-                // TODO:: connect after repair handleWheelHook
-                // onWheel={handleWheelHook(dispatch, state)}
                 onMouseUp={handleMouseUp(dispatch, state)}
                 onMouseDown={handleMouseDown(dispatch, state)}
                 onMouseMove={handleMouseMove(dispatch, state)}
