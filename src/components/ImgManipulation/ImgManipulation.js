@@ -76,6 +76,7 @@ const ImgManipulation = ({ currentAnnotation, area, zoomData }) => {
     useEffect(() => {
         if (!state.initialHeight) return;
         ref.current.addEventListener('wheel', handleWheelHook(dispatch, state), { passive: false });
+        // return () => ref.current.removeEventListener('wheel', handleWheelHook(dispatch, state), { passive: false });
     }, [state.initialHeight]);
 
     useEffect(() => {

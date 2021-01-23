@@ -4,7 +4,17 @@
       "url": "/static/media/nature.c45a67bf.png",
       "name": "nature",
       "id": 1,
-      "annotations": []
+      "annotations": [
+        {
+          "pos": {
+            "x": 0.38278831269349844,
+            "y": 0.09648980034722222
+          },
+          "comment": "some json",
+          "author": "Luke Skywalker",
+          "id": "4fee6954-f0f6-4672-9933-4401d836e15c"
+        }
+      ]
     },
     {
       "url": "/static/media/star.d4508a3f.png",
@@ -13,12 +23,21 @@
       "annotations": [
         {
           "pos": {
-            "x": 0.3406005859375,
-            "y": 0.3976806640625
+            "x": 0.393212890625,
+            "y": 0.2094970703125
+          },
+          "comment": "bn",
+          "author": "Luke Skywalker",
+          "id": "75ed0412-46db-497b-95cc-9150d1141b76"
+        },
+        {
+          "pos": {
+            "x": 0.653515625,
+            "y": 0.1655029296875
           },
           "comment": "some",
           "author": "Luke Skywalker",
-          "id": 1
+          "id": "2e0d9fe1-3c43-40e3-bc0a-7ee936b1db39"
         }
       ]
     }

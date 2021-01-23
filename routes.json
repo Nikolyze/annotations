@@ -1,0 +1,3 @@
+{
+  "/api/*/_search?*=:searchstring": "/$1/?$2_like=:searchstring"
+}
