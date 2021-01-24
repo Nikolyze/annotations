@@ -17,6 +17,7 @@ import './ImgManipulation.sass';
 //three
 //test1
 //test2
+//test3
 const ImgManipulation = ({ currentAnnotation, area, zoomData }) => {
     const ref = useRef(null);
     const refParent = useRef(null);
