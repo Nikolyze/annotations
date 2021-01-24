@@ -15,6 +15,7 @@ import { updateAnnotationFile } from '../../ajax/requests';
 import { PLUS, MINUS } from '../../static/constants';
 import './ImgManipulation.sass';
 //test1
+//test2
 const ImgManipulation = ({ currentAnnotation, area, zoomData }) => {
     const ref = useRef(null);
     const refParent = useRef(null);
